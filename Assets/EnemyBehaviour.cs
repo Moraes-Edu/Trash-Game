@@ -11,6 +11,7 @@ public class EnemyBehaviour : MonoBehaviour
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
         points = GameObject.FindGameObjectWithTag("Objective").transform;
     }
     void Update()

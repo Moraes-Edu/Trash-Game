@@ -6,10 +6,20 @@ public class turret : MonoBehaviour
 {
 
     private Transform target;
+    
+    [Header("Atributos")]
     public float range = 15f;
+    public float fireRate = 1f;
+    private float fireCountdown = 0f;
+    public float turnSpeed = 10f;
+
+    [Header("Unity Setup")]
     public string enemyTag = "Enemy";
     public Transform partePraGirar;
-    public float turnSpeed = 10f;
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+
+    
     void Start()
     {
         InvokeRepeating ("UpdateTarget", 0f, 0.5f);
@@ -50,9 +60,20 @@ public class turret : MonoBehaviour
         Vector3 rotation = Quaternion.Lerp(partePraGirar.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
         partePraGirar.rotation = Quaternion.Euler (0f, rotation.y, 0f);
 
+        if (fireCountdown <= 0 )
+        {
+            Shoot();
+            fireCountdown = 1f / fireRate;
+        }
+        fireCountdown -= Time.deltaTime;
     }
 
-   void OnDrawGizmosSelected ()
+    void Shoot()
+    {
+        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    }
+
+   void OnDrawGizmosSelected()
     {
        Gizmos.color = Color.red;
        Gizmos.DrawWireSphere(transform.position, range);    

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5611729337132193917}
   - component: {fileID: 5063437152068139906}
   - component: {fileID: 8994387181940056171}
+  - component: {fileID: -289022841013196906}
   m_Layer: 0
   m_Name: Bala
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-289022841013196906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646195267621983911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b604bcdc1ad77c149b65ec514a6f90d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 20

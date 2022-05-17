@@ -22,7 +22,8 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if(other.tag == "Objective")
         {
-            SceneManager.LoadScene("GameOver");
+            HealthBehaviour.hp--;
+            Destroy(this.gameObject);
         }
     }
 }

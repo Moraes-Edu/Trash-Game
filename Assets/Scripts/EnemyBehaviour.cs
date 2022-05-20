@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+    [SerializeField]
+    Material[] materiais;
     Transform points;
     NavMeshAgent agent;
     void Awake()
@@ -13,6 +15,11 @@ public class EnemyBehaviour : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
         points = GameObject.FindGameObjectWithTag("Objective").transform;
+        var a = transform.GetChild(0);
+        for(int i = 0; i < a.childCount; i++)
+        {
+            a.transform.GetChild(i).GetComponent<MeshRenderer>().material = materiais[WaveBehaviour.index];
+        }
     }
     void Update()
     {

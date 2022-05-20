@@ -249,6 +249,50 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4936142755755012687, guid: 5a56780a79713d5479bda6918995dfdc, type: 3}
+--- !u!1 &351538107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 351538109}
+  - component: {fileID: 351538108}
+  m_Layer: 0
+  m_Name: WaveController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &351538108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351538107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c3c980d71a15a94196ac39e3cce038a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &351538109
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351538107}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &561735969
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,10 +776,7 @@ MonoBehaviour:
   - {fileID: 1586712572}
   - {fileID: 692525723}
   - {fileID: 568908930}
-  enemies:
-  - {fileID: 2551430930999374182, guid: b074a1de32881104ba60441145b55ee2, type: 3}
-  - {fileID: 2551430930999374182, guid: edd4a9cbd26b5994d967af0b1a01bda9, type: 3}
-  enemiesNumber: 15
+  enemie: {fileID: 2551430930999374182, guid: b074a1de32881104ba60441145b55ee2, type: 3}
   delayAfterSpawn: 1.5
 --- !u!1 &1161198478
 GameObject:
@@ -990,7 +1031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8ff4e8d92c7114a92708e56f6b9381, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalV: 10
+  totalDeVidas: 10
   nomeCena: GameOver
   TextoVida: {fileID: 1830788471}
 --- !u!4 &1203736406

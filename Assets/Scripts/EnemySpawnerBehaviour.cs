@@ -5,17 +5,17 @@ using UnityEngine;
 public class EnemySpawnerBehaviour : MonoBehaviour
 {
     [SerializeField]    private Transform[] spawnPoints;
-    [SerializeField]    private GameObject[] enemies;
+    [SerializeField]    private GameObject enemie;
     [SerializeField]    private Queue<GameObject> enemiesQueue;
-    [SerializeField]    private int enemiesNumber;
     [SerializeField]    private float delayAfterSpawn;
+    bool gameOver = false;
 
     private void Awake()
     {
         enemiesQueue = new Queue<GameObject>();
-        for(int i = 0; i < enemiesNumber; i++)
+        for(int i = 0; i < WaveBehaviour.quantSpawn; i++)
         {
-            enemiesQueue.Enqueue(Instantiate(enemies[Random.Range(0 ,enemies.Length)],spawnPoints[Random.Range(0,spawnPoints.Length)]));
+            enemiesQueue.Enqueue(Instantiate(enemie,spawnPoints[Random.Range(0,spawnPoints.Length)]));
         }
     }
     private void Start()
@@ -24,10 +24,14 @@ public class EnemySpawnerBehaviour : MonoBehaviour
     }
     IEnumerator Spawn()
     {
-        while (enemiesQueue.Count > 0)
+        while (!gameOver)
         {
-            yield return new WaitForSeconds(delayAfterSpawn);
-            enemiesQueue.Dequeue().SetActive(true);
+            while (enemiesQueue.Count > 0)
+            {
+                yield return new WaitForSeconds(delayAfterSpawn);
+                enemiesQueue.Dequeue().SetActive(true);
+                WaveBehaviour.contSpawn--;
+            }
         }
     }
 }

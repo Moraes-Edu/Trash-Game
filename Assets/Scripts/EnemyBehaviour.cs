@@ -18,7 +18,7 @@ public class EnemyBehaviour : MonoBehaviour
         var a = transform.GetChild(0);
         for(int i = 0; i < a.childCount; i++)
         {
-            a.transform.GetChild(i).GetComponent<MeshRenderer>().material = materiais[WaveBehaviour.index];
+            a.transform.GetChild(i).GetComponent<MeshRenderer>().material = materiais[EnemySpawner.TextureIndex];
         }
     }
     void Update()

@@ -48,9 +48,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da17e851be59fea4fb4169da585a6fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materiais:
-  - {fileID: 2100000, guid: b4bac0541005be640a1343d12634e0dd, type: 2}
-  - {fileID: 2100000, guid: f0030a5511c52664687d9baab14bb272, type: 2}
+  velocity: 5
+  life: 0
+  points: []
 --- !u!195 &2551430930999374177
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -11,7 +11,6 @@ public class Currency : MonoBehaviour
         CurrentCoins = 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
         

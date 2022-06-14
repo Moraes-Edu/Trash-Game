@@ -6,31 +6,28 @@ using UnityEngine.SceneManagement;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    [SerializeField]
-    Material[] materiais;
-    Transform points;
-    NavMeshAgent agent;
-    void Awake()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
-        points = GameObject.FindGameObjectWithTag("Objective").transform;
-        var a = transform.GetChild(0);
-        for(int i = 0; i < a.childCount; i++)
-        {
-            a.transform.GetChild(i).GetComponent<MeshRenderer>().material = materiais[EnemySpawner.TextureIndex];
-        }
-    }
+    [SerializeField]    private float velocity;
+    [SerializeField]    private int life;
+    public Transform[] points;
+    private int indexer = 0;
+
     void Update()
     {
-        agent.SetDestination(points.position);
-    }
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Objective")
+        Vector3 dir = points[indexer].position - transform.position;
+        transform.Translate(dir.normalized * velocity * Time.deltaTime, Space.World);
+
+        if (Vector3.Distance(points[indexer].position,transform.position) < 10)
         {
-            HealthBehaviour.hp--;
-            Destroy(this.gameObject);
+            if (points.Length < indexer)
+                indexer++;
+            else
+                Collide();
         }
+
+    }
+    void Collide()
+    {
+        HealthBehaviour.hp--;
+        Destroy(this.gameObject);
     }
 }

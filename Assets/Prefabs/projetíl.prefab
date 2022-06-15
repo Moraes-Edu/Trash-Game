@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8994387181940056171}
   - component: {fileID: -289022841013196906}
   m_Layer: 0
-  m_Name: Bala
+  m_Name: "projet\xEDl"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

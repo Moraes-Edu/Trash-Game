@@ -16,14 +16,13 @@ public class EnemyBehaviour : MonoBehaviour
         Vector3 dir = points[indexer].position - transform.position;
         transform.Translate(dir.normalized * velocity * Time.deltaTime, Space.World);
 
-        if (Vector3.Distance(points[indexer].position,transform.position) < 10)
+        if (Vector3.Distance(points[indexer].position, transform.position) < 10)
         {
             if (points.Length < indexer)
                 indexer++;
             else
                 Collide();
         }
-
     }
     void Collide()
     {

@@ -14,7 +14,7 @@ public class HealthBehaviour : MonoBehaviour
     [Header("GameOver Settings")]
     public string nomeCena;
     [Header("UI Settings")]
-    public TextMeshProUGUI TextoVida;
+    public Text TextoVida;
 
     void Start()
     {
@@ -24,7 +24,7 @@ public class HealthBehaviour : MonoBehaviour
     {
         if (hp <= 0)
             EndGame();
-        TextoVida.text = hp.ToString() + " vidas";
+        TextoVida.text = hp.ToString() + " vidas restante";
     }
 
     void EndGame () 

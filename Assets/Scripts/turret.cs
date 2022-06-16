@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class turret : MonoBehaviour
+public class Turret : MonoBehaviour
 {
 
     private Transform target;
@@ -22,7 +22,7 @@ public class turret : MonoBehaviour
     
     void Start()
     {
-        InvokeRepeating ("UpdateTarget", 0f, 0.5f);
+        InvokeRepeating(nameof(UpdateTarget), 0f, 0.5f);
     }
       
     void UpdateTarget ()

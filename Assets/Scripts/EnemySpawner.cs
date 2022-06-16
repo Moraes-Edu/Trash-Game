@@ -14,7 +14,6 @@ public class EnemySpawner : MonoBehaviour
 
     private int maxSpawn;
     public static int TextureIndex { get; private set; } = 0;
-    bool gameOver = false;
     private int IncreaseAmount;
 
     void Start()

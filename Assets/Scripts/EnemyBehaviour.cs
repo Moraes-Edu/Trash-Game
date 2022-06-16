@@ -14,7 +14,7 @@ public class EnemyBehaviour : MonoBehaviour
     void Update()
     {
         Vector3 dir = points[indexer].position - transform.position;
-        transform.Translate(dir.normalized * velocity * Time.deltaTime, Space.World);
+        transform.Translate(Time.deltaTime * velocity * dir.normalized, Space.World);
 
         if (Vector3.Distance(points[indexer].position, transform.position) < 10)
         {
@@ -26,7 +26,7 @@ public class EnemyBehaviour : MonoBehaviour
     }
     void Collide()
     {
-        HealthBehaviour.hp--;
+        HealthBehaviour.Decrease(1);
         Destroy(this.gameObject);
     }
 }

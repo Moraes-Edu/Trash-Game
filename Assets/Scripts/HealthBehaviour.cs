@@ -8,13 +8,13 @@ using TMPro;
 public class HealthBehaviour : MonoBehaviour
 {
     [Header("Health Settings")]
-    public static int hp;
-    public int totalDeVidas = 10;
+    private static int hp;
+    [SerializeField] int totalDeVidas = 10;
 
     [Header("GameOver Settings")]
-    public string nomeCena;
+    [SerializeField] string nomeCena;
     [Header("UI Settings")]
-    public Text TextoVida;
+    [SerializeField] Text TextoVida;
 
     void Start()
     {
@@ -31,6 +31,14 @@ public class HealthBehaviour : MonoBehaviour
     {
         Debug.Log("Fim de jogo!");
         SceneManager.LoadSceneAsync(nomeCena);
+    }
+    public static void Decrease(int n)
+    {
+        hp -= n;
+    }
+    public static void Increase(int n)
+    {
+        hp += n;
     }
 
 }

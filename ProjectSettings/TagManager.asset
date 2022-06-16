@@ -6,19 +6,20 @@ TagManager:
   tags:
   - Objective
   - Enemy
+  - Terrain
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Not Solid
+  - 
   - Water
   - UI
-  - Solid
   - 
   - 
   - 
   - 
-  - 
+  - Terrain
+  - torres
   - 
   - 
   - 

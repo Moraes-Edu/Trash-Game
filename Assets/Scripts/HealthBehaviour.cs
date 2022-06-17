@@ -24,7 +24,7 @@ public class HealthBehaviour : MonoBehaviour
     {
         if (hp <= 0)
             EndGame();
-        TextoVida.text = hp.ToString() + " vidas restante";
+        TextoVida.text = hp.ToString() + " vidas";
     }
 
     void EndGame () 

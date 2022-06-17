@@ -12,13 +12,13 @@ GameObject:
   - component: {fileID: 1533898630429485336}
   - component: {fileID: 1567721814359567915}
   - component: {fileID: 4764185115937293741}
-  m_Layer: 11
-  m_Name: Sphere
+  m_Layer: 0
+  m_Name: Preview Esfera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8759522934706305325
 Transform:
   m_ObjectHideFlags: 0

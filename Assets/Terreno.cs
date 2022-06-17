@@ -10,22 +10,37 @@ public class Terreno : MonoBehaviour
     [SerializeField]    private float minRadius;
     [SerializeField]    LayerMask layersToCollide;
     [SerializeField]    LayerMask layersTerrain;
+    [SerializeField] LayerMask turretsLayer;
     [SerializeField]    Text text;
     [SerializeField]    Material[] materials;
-    public GameObject turretToBuild;
-    public bool active;
+    [Header("Torres")]
+    [SerializeField]
+    TurretData turretData;
+    GameObject turretToBuild;
+    GameObject turretPreview;
+    bool active;
     GameObject go = null;
     Vector3 pos;
     int towerCount;
-
+    bool removeTurret;
+    Ray ray;
     private void Update()
     {
+        if (removeTurret && Input.GetMouseButtonDown(0))
+        {
+            if(Physics.Raycast(ray, out RaycastHit HitInfo, Mathf.Infinity, turretsLayer))
+            {
+                Destroy(HitInfo.collider.gameObject);
+                Decrease();
+                removeTurret = false;
+            }
+        }
         if (!active)
             return;
         
-        (go = go != null ? go : Instantiate(turretToBuild,pos,Quaternion.identity)).transform.position = pos;
+        (go = go != null ? go : Instantiate(turretPreview,pos,Quaternion.identity)).transform.position = pos;
 
-        if (Physics.OverlapSphere(pos, minRadius, layersToCollide).Length > 1)
+        if (Physics.OverlapSphere(pos, minRadius, layersToCollide).Length > 0)
         {
             go.GetComponent<MeshRenderer>().material = materials[0];
             return;
@@ -34,7 +49,7 @@ public class Terreno : MonoBehaviour
             go.GetComponent<MeshRenderer>().material = materials[1];
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && pos != Vector3.zero)
         {
             GameObject turret = (GameObject)Instantiate(turretToBuild, pos, transform.rotation);
             Increase();
@@ -44,9 +59,16 @@ public class Terreno : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (!Physics.Raycast(ray, out RaycastHit HitInfo, Mathf.Infinity, Physics.AllLayers))
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (!Physics.Raycast(ray, out RaycastHit HitInfo, Mathf.Infinity, layersTerrain))
+        {
+            pos = Vector3.zero;
+            go?.SetActive(false);
             return;
+        } else
+        {
+            go?.SetActive(true);
+        }
         if (!HitInfo.collider.CompareTag("Terrain"))
             return;
         pos = HitInfo.point;
@@ -63,10 +85,15 @@ public class Terreno : MonoBehaviour
         if (go != null)
         Gizmos.DrawWireSphere(go.transform.position, minRadius);
     }
-    public void Change(GameObject goo)
+    public void Change(int index)
     {
-        turretToBuild = goo;
+        turretPreview = turretData.turrets[index].preview;
+        turretToBuild = turretData.turrets[index].turret;
         active = true;
+    }
+    public void Remove()
+    {
+        removeTurret = true;
     }
     private void Increase()
     {
@@ -78,6 +105,4 @@ public class Terreno : MonoBehaviour
         towerCount--;
         text.text = $"{towerCount} torres";
     }
-
-
 }

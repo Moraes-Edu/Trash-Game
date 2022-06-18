@@ -24,6 +24,12 @@ public class Terreno : MonoBehaviour
     int towerCount;
     bool removeTurret;
     Ray ray;
+
+    public TurretInfo torreEsquilo;
+    public TurretInfo torreCarnivora;
+
+    private TurretInfo turretInfo;
+
     private void Update()
     {
         if (removeTurret && Input.GetMouseButtonDown(0))
@@ -51,10 +57,18 @@ public class Terreno : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && pos != Vector3.zero)
         {
+            if (Currency.currentCoins < turretInfo.cost) 
+            {
+                Debug.Log("pobre");
+                return;
+            }
             GameObject turret = (GameObject)Instantiate(turretToBuild, pos, transform.rotation);
             Increase();
             Destruct();
             pos = Vector3.zero;
+            Currency.currentCoins -= turretInfo.cost;
+            
+            Debug.Log("Money Left: " + Currency.currentCoins);
         }
     }
     private void FixedUpdate()

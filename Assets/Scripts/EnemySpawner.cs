@@ -44,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
                 yield return new WaitForSeconds(delayAfterSpawn);
             }
             yield return new WaitUntil(()=>GameObject.FindGameObjectsWithTag("Enemy").Length < 1);
-            Currency.Increase(IncreaseAmount);
+            // Currency.Increase(IncreaseAmount);
             maxSpawn = quantSpawn;
         }
     }

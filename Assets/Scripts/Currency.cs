@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Currency : MonoBehaviour
 {
-    public static int CurrentCoins { get; private set; }
+    public static int currentCoins;
+    public int startMoney = 400;
     
     void Start()
     {
-        CurrentCoins = 0;
+        currentCoins = startMoney;
     }
 
     void Update()
@@ -17,6 +18,6 @@ public class Currency : MonoBehaviour
     }
     public static void Increase(int amount)
     {
-        CurrentCoins += amount;
+        currentCoins += amount;
     }
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1533898630429485336}
   - component: {fileID: 1567721814359567915}
   - component: {fileID: 4764185115937293741}
+  - component: {fileID: -6435135578113153704}
   m_Layer: 11
   m_Name: Torre Esfera
   m_TagString: Untagged
@@ -97,3 +98,22 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6435135578113153704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7809393384878255650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ced7f6dfe3d5534c98167619f798cf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 15
+  fireRate: 1
+  turnSpeed: 10
+  enemyTag: Enemy
+  partePraGirar: {fileID: 0}
+  bulletPrefab: {fileID: 0}
+  firePoint: {fileID: 0}

@@ -5,70 +5,64 @@ using System.Linq;
 using System;
 using UnityEngine.UI;
 
-public class Terreno : MonoBehaviour
+public class TurretPlacement : MonoBehaviour
 {
-    [SerializeField]    private float minRadius;
-    [SerializeField]    LayerMask layersToCollide;
-    [SerializeField]    LayerMask layersTerrain;
+    [SerializeField] private int maxTowers;
+    [SerializeField] private float minRadius;
+    [SerializeField] LayerMask layersToCollide;
+    [SerializeField] LayerMask layersTerrain;
     [SerializeField] LayerMask turretsLayer;
-    [SerializeField]    Text text;
-    [SerializeField]    Material[] materials;
+    [SerializeField] Text text;
+    [SerializeField] Material[] materials;
     [Header("Torres")]
     [SerializeField]
-    TurretData turretData;
-    GameObject turretToBuild;
-    GameObject turretPreview;
+    TowerInfo[] turretData;
     bool active;
     GameObject go = null;
     Vector3 pos;
     int towerCount;
     bool removeTurret;
     Ray ray;
-
-    public TurretInfo torreEsquilo;
-    public TurretInfo torreCarnivora;
-
-    private TurretInfo turretInfo;
+    int turretIndexer;
 
     private void Update()
     {
         if (removeTurret && Input.GetMouseButtonDown(0))
         {
-            if(Physics.Raycast(ray, out RaycastHit HitInfo, Mathf.Infinity, turretsLayer))
+            if (Physics.Raycast(ray, out RaycastHit HitInfo, Mathf.Infinity, turretsLayer))
             {
+                Currency.Increase(HitInfo.collider.gameObject.GetComponent<Turret>().Data.cost / 2);
                 Destroy(HitInfo.collider.gameObject);
                 Decrease();
-                removeTurret = false;
             }
+            removeTurret = false;
         }
-        if (!active)
+        if (!active || maxTowers <= towerCount)
             return;
-        
-        (go = go != null ? go : Instantiate(turretPreview,pos,Quaternion.identity)).transform.position = pos;
+
+        (go = go != null ? go : Instantiate(turretData[turretIndexer].preview, pos, Quaternion.identity)).transform.position = pos;
 
         if (Physics.OverlapSphere(pos, minRadius, layersToCollide).Length > 0)
         {
             go.GetComponent<MeshRenderer>().material = materials[0];
             return;
-        } else
+        }
+        else
         {
             go.GetComponent<MeshRenderer>().material = materials[1];
         }
 
         if (Input.GetMouseButtonDown(0) && pos != Vector3.zero)
         {
-            if (Currency.currentCoins < turretInfo.cost) 
+            if (!Currency.Decrease(turretData[turretIndexer].cost))
             {
-                Debug.Log("pobre");
+                Destruct();
                 return;
             }
-            GameObject turret = (GameObject)Instantiate(turretToBuild, pos, transform.rotation);
+            GameObject turret = (GameObject)Instantiate(turretData[turretIndexer].turret, pos, transform.rotation);
+            turret.GetComponent<Turret>().Data = turretData[turretIndexer];
             Increase();
             Destruct();
-            pos = Vector3.zero;
-            Currency.currentCoins -= turretInfo.cost;
-            
-            Debug.Log("Money Left: " + Currency.currentCoins);
         }
     }
     private void FixedUpdate()
@@ -79,7 +73,8 @@ public class Terreno : MonoBehaviour
             pos = Vector3.zero;
             go?.SetActive(false);
             return;
-        } else
+        }
+        else
         {
             go?.SetActive(true);
         }
@@ -89,34 +84,41 @@ public class Terreno : MonoBehaviour
     }
     private void Destruct()
     {
+        pos = Vector3.zero;
         Destroy(go);
         go = null;
         active = false;
+        turretIndexer = -1;
     }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.black;
         if (go != null)
-        Gizmos.DrawWireSphere(go.transform.position, minRadius);
+            Gizmos.DrawWireSphere(go.transform.position, minRadius);
     }
     public void Change(int index)
     {
-        turretPreview = turretData.turrets[index].preview;
-        turretToBuild = turretData.turrets[index].turret;
+        if (turretIndexer == index)
+        {
+            active = false;
+            return;
+        }
+        turretIndexer = index;
         active = true;
     }
     public void Remove()
     {
-        removeTurret = true;
+        removeTurret = !removeTurret;
+        Destruct();
     }
     private void Increase()
     {
         towerCount++;
-        text.text = $"{towerCount} torres";
+        text.text = $"towers: {towerCount}";
     }
     private void Decrease()
     {
         towerCount--;
-        text.text = $"{towerCount} torres";
+        text.text = $"towers: {towerCount}";
     }
 }

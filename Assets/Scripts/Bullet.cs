@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-
+    private int damage = 1;
     private Transform target;
 
-    public float speed = 70f;
+    public float speed = 100f;
 
     public void Seek (Transform _target)
     {
@@ -34,6 +34,10 @@ public class Bullet : MonoBehaviour
     void HitTarget()
     {
         Destroy(gameObject);
-        Destroy(target.gameObject);
+        target.GetComponent<IEnemy>().TakeDamage(damage);
+    }
+    public void Change(int multiplier)
+    {
+        damage *= multiplier;
     }
 }

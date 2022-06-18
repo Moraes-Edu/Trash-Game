@@ -61,9 +61,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7731730344938027351, guid: 4ea9410a16664514190b1b826667e7bf, type: 3}
-  - {fileID: -583405790510602304, guid: 4ea9410a16664514190b1b826667e7bf, type: 3}
-  - {fileID: 3044043465599994531, guid: 4ea9410a16664514190b1b826667e7bf, type: 3}
+  - {fileID: 2100000, guid: c4c52a016e7091f4b99c713b0cfb827e, type: 2}
+  - {fileID: 2100000, guid: c4c52a016e7091f4b99c713b0cfb827e, type: 2}
+  - {fileID: 2100000, guid: c4c52a016e7091f4b99c713b0cfb827e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -199,6 +199,7 @@ MonoBehaviour:
   range: 15
   fireRate: 1
   turnSpeed: 10
+  dmg: 1
   enemyTag: Enemy
   partePraGirar: {fileID: 2830585221761675924}
   bulletPrefab: {fileID: 1646195267621983911, guid: e796eb342ef7cfd499bc297254232aeb, type: 3}
@@ -278,8 +279,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -583405790510602304, guid: 4ea9410a16664514190b1b826667e7bf, type: 3}
-  - {fileID: 3044043465599994531, guid: 4ea9410a16664514190b1b826667e7bf, type: 3}
+  - {fileID: 2100000, guid: c4c52a016e7091f4b99c713b0cfb827e, type: 2}
+  - {fileID: 2100000, guid: c4c52a016e7091f4b99c713b0cfb827e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

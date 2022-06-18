@@ -10,35 +10,26 @@ public class HealthBehaviour : MonoBehaviour
     [Header("Health Settings")]
     private static int hp;
     [SerializeField] int totalDeVidas = 10;
-
-    [Header("GameOver Settings")]
-    [SerializeField] string nomeCena;
     [Header("UI Settings")]
     [SerializeField] Text TextoVida;
+    static Text tv;
 
     void Start()
     {
         hp = totalDeVidas;
+        tv = TextoVida;
     }
-    void Update()
-    {
-        if (hp <= 0)
-            EndGame();
-        TextoVida.text = hp.ToString() + " vidas";
-    }
-
-    void EndGame () 
+    static void EndGame () 
     {
         Debug.Log("Fim de jogo!");
-        SceneManager.LoadSceneAsync(nomeCena);
+        SceneManager.LoadSceneAsync("GameOver");
     }
     public static void Decrease(int n)
     {
         hp -= n;
-    }
-    public static void Increase(int n)
-    {
-        hp += n;
+        if (hp <= 0)
+            EndGame();
+        tv.text = $"Lifes: {hp}";
     }
 
 }

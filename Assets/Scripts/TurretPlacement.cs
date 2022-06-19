@@ -14,6 +14,7 @@ public class TurretPlacement : MonoBehaviour
     [SerializeField] LayerMask turretsLayer;
     [SerializeField] Text text;
     [SerializeField] Material[] materials;
+    [SerializeField] Terrain terrain;
     [Header("Torres")]
     [SerializeField]
     TowerInfo[] turretData;
@@ -23,7 +24,7 @@ public class TurretPlacement : MonoBehaviour
     int towerCount;
     bool removeTurret;
     Ray ray;
-    int turretIndexer;
+    int turretIndexer = -1;
 
     private void Update()
     {
@@ -42,7 +43,7 @@ public class TurretPlacement : MonoBehaviour
 
         (go = go != null ? go : Instantiate(turretData[turretIndexer].preview, pos, Quaternion.identity)).transform.position = pos;
 
-        if (Physics.OverlapSphere(pos, minRadius, layersToCollide).Length > 0)
+        if (Physics.OverlapSphere(pos, minRadius, layersToCollide).Length > 0 ||(pos != Vector3.zero && TextureTest(pos,terrain) == "gravel"))
         {
             go.GetComponent<MeshRenderer>().material = materials[0];
             return;
@@ -82,6 +83,38 @@ public class TurretPlacement : MonoBehaviour
             return;
         pos = HitInfo.point;
     }
+    string TextureTest(Vector3 turretPos,Terrain t)
+    {
+        float[] cellMix = GetTextureMix(turretPos, t);
+        float strongest = 0;
+        int maxIndex = 0;
+        for(int i = 0; i < cellMix.Length; i++)
+        {
+            if(cellMix[i] > strongest)
+            {
+                maxIndex = i;
+                strongest = cellMix[i];
+            }
+        }
+        Debug.Log(t.terrainData.terrainLayers[maxIndex].name);
+        return t.terrainData.terrainLayers[maxIndex].name;
+    }
+    float[] GetTextureMix(Vector3 turretPos,Terrain t)
+    {
+        Vector3 tPos = t.transform.position;
+        TerrainData tData = t.terrainData;
+
+        int mapX = Mathf.RoundToInt((turretPos.x - tPos.x) / tData.size.x * tData.alphamapWidth);
+        int mapZ = Mathf.RoundToInt((turretPos.z - tPos.z) / tData.size.z * tData.alphamapHeight);
+        float[,,] splatMapData = tData.GetAlphamaps(mapX, mapZ, 1, 1);
+
+        float[] cellmix = new float[splatMapData.GetUpperBound(2)+1];
+        for(int i = 0; i < cellmix.Length; i++)
+        {
+            cellmix[i] = splatMapData[0,0,i];
+        }
+        return cellmix;
+    } 
     private void Destruct()
     {
         pos = Vector3.zero;

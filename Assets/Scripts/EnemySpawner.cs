@@ -28,10 +28,10 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForSecondsRealtime(3f);
         while (true)
         {
-            countWaves++;
-            Change();
             for(int i = 1; i < 5; i++)
             {
+                countWaves++;
+                Change();
                 yield return new WaitForSecondsRealtime(3f);
                 maxSpawn = quantSpawnBase + 4*i;
                 while(maxSpawn > 0)
@@ -50,6 +50,8 @@ public class EnemySpawner : MonoBehaviour
             }
             yield return new WaitForSecondsRealtime(3f);
 
+            countWaves++;
+            Change();
             int n = Random.Range(0, spawnPoints.Length);
             GameObject chefe = Instantiate(boss, spawnPoints[n]);
             IEnemy b = chefe.GetComponent<IEnemy>();
@@ -63,7 +65,7 @@ public class EnemySpawner : MonoBehaviour
     }
     void Change()
     {
-        waves.text = $"Waves: {countWaves}";
+        waves.text = $"Wave: {countWaves}";
     }
 }
 

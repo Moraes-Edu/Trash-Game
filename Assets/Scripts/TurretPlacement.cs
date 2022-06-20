@@ -68,6 +68,8 @@ public class TurretPlacement : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!active && !removeTurret)
+            return;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out RaycastHit HitInfo, Mathf.Infinity, layersTerrain))
         {

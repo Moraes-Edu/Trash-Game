@@ -16,10 +16,12 @@ public class EnemyBehaviour : MonoBehaviour
     public Transform[] Points { get; private set; }
     private int indexer;
     const float range = 5;
+    EnemySpawner spawner;
 
     void Awake()
     {
         life = initialLife;
+        spawner = GameObject.Find("WaveController").GetComponent<EnemySpawner>();
     }
 
     void Update()
@@ -47,7 +49,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         life -= dmg;
         if (life <= 0)
-            Destroy(this.gameObject);
+            spawner.Add(this.gameObject);
     }
     void OnDrawGizmos()
     {

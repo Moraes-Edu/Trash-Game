@@ -18,6 +18,13 @@ public class TurretPlacement : MonoBehaviour
     [Header("Torres")]
     [SerializeField]
     TowerInfo[] turretData;
+    public static GameObject torreSelected;
+
+    [HideInInspector]
+    public TowerInfo towerInfo;
+    [HideInInspector]
+    public bool isUpgraded = false;
+    
     bool active;
     GameObject go = null;
     Vector3 pos;
@@ -68,8 +75,6 @@ public class TurretPlacement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (!active && !removeTurret)
-            return;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out RaycastHit HitInfo, Mathf.Infinity, layersTerrain))
         {
@@ -156,4 +161,46 @@ public class TurretPlacement : MonoBehaviour
         towerCount--;
         text.text = $"towers: {towerCount}";
     }
+
+    public void UpgradeTurret ()
+	{
+		if (Currency.currentCoins < towerInfo.upgradeCost)
+		{
+			Debug.Log("Not enough money to upgrade that!");
+			return;
+		}
+
+		Currency.currentCoins -= towerInfo.upgradeCost;
+
+		//Get rid of the old turret
+		Destroy(torreSelected);
+
+		//Build a new one
+		GameObject _turret = (GameObject)Instantiate(towerInfo.upgradedPrefab, GetBuildPosition(), Quaternion.identity);
+		torreSelected = _turret;
+
+		isUpgraded = true;
+
+		Debug.Log("Turret upgraded!");
+	}
+    Vector3 GetBuildPosition()
+    {
+        return torreSelected.transform.position;
+    }
+
+    public static void SelectNode (GameObject turret)
+	{
+		if (torreSelected == turret)
+		{
+			DeselectNode();
+			return;
+		}
+
+		torreSelected = turret;
+	}
+
+	public static void DeselectNode()
+	{
+		torreSelected = null;
+	}
 }

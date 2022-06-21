@@ -86,5 +86,9 @@ public class Turret : MonoBehaviour
        Gizmos.DrawWireSphere(transform.position, range);    
     }
 
-
+    void OnMouseDown()
+    {
+        Debug.Log("a");
+        TurretPlacement.SelectNode(this.gameObject);
+    } 
 }

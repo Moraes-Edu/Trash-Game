@@ -8,7 +8,7 @@ public struct TowerInfo
     public GameObject preview;
     public int cost;
 
-    public GameObject upgradedPrefab;
+    // public GameObject upgradedPrefab;
     public int upgradeCost;
 
     // public int GetSellAmount ()

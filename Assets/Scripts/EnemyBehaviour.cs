@@ -15,7 +15,7 @@ public class EnemyBehaviour : MonoBehaviour
     private protected int life;
     public Transform[] Points { get; private set; }
     private int indexer;
-    const float range = 5;
+    const float range = 2;
     EnemySpawner spawner;
 
     void Awake()
@@ -43,7 +43,7 @@ public class EnemyBehaviour : MonoBehaviour
     void Collide()
     {
         HealthBehaviour.Decrease(dano);
-        Destroy(this.gameObject);
+        spawner.Add(this.gameObject);
     }
     public void TakeDamage(int dmg)
     {

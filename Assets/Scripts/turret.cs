@@ -72,6 +72,7 @@ public class Turret : MonoBehaviour
 
     void Shoot()
     {
+        Debug.Log(dmg);
         GameObject bulletGO = (GameObject)Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Bullet bullet = bulletGO.GetComponent<Bullet>();
         bullet.Change(dmg);
@@ -90,5 +91,9 @@ public class Turret : MonoBehaviour
     {
         Debug.Log("a");
         TurretPlacement.SelectNode(this.gameObject);
-    } 
+    }
+    public void Upgrade()
+    {
+        this.dmg *= 2;
+    }
 }

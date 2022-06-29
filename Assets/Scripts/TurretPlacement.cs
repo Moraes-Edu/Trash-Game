@@ -103,7 +103,6 @@ public class TurretPlacement : MonoBehaviour
                 strongest = cellMix[i];
             }
         }
-        Debug.Log(t.terrainData.terrainLayers[maxIndex].name);
         return t.terrainData.terrainLayers[maxIndex].name;
     }
     float[] GetTextureMix(Vector3 turretPos,Terrain t)
@@ -164,24 +163,14 @@ public class TurretPlacement : MonoBehaviour
 
     public void UpgradeTurret ()
 	{
-		if (Currency.currentCoins < towerInfo.upgradeCost)
-		{
-			Debug.Log("Not enough money to upgrade that!");
-			return;
-		}
-
-		Currency.currentCoins -= towerInfo.upgradeCost;
-
-		//Get rid of the old turret
-		Destroy(torreSelected);
-
-		//Build a new one
-		GameObject _turret = (GameObject)Instantiate(towerInfo.upgradedPrefab, GetBuildPosition(), Quaternion.identity);
-		torreSelected = _turret;
-
-		isUpgraded = true;
-
-		Debug.Log("Turret upgraded!");
+        var torrescript = torreSelected.GetComponent<Turret>();
+        if(!Currency.Decrease(torrescript.Data.cost))
+        {
+            Debug.Log("Sem moeda");
+            return;
+        }
+        torrescript.Upgrade();
+        Debug.Log("melhorado");
 	}
     Vector3 GetBuildPosition()
     {

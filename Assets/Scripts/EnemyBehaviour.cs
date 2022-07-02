@@ -11,22 +11,27 @@ public class EnemyBehaviour : MonoBehaviour
     const float turnSpeed = 10f;
     [SerializeField]
     protected int initialLife = 1;
-    private float velocity = 5;
+    private float velocity = 5*10;
     private protected int life;
-    public Transform[] Points { get; private set; }
+    public Transform[] Path { get; set; }
     private int indexer;
     const float range = 2;
     EnemySpawner spawner;
 
     void Awake()
     {
-        life = initialLife;
         spawner = GameObject.Find("WaveController").GetComponent<EnemySpawner>();
     }
-
-    void Update()
+    void OnEnable()
     {
-        Vector3 dir = Points[indexer].position - transform.position;
+        Debug.Log(Path.Length);
+        this.transform.position = Path[0].position; 
+        life = initialLife;
+    }
+
+    void LateUpdate()
+    {
+        Vector3 dir = Path[indexer].position - transform.position;
 
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
@@ -34,14 +39,15 @@ public class EnemyBehaviour : MonoBehaviour
 
         transform.Translate(Time.deltaTime * velocity * dir.normalized, Space.World);
         
-        if (Vector3.Distance(Points[indexer].position, transform.position) < range)
+        if (Vector3.Distance(Path[indexer].position, transform.position) < range)
         {
-            if (++indexer >= Points.Length)
+            if (++indexer == Path.Length)
                 Collide();
         }
     }
     void Collide()
     {
+        indexer = 0;
         HealthBehaviour.Decrease(dano);
         spawner.Add(this.gameObject);
     }
@@ -49,16 +55,13 @@ public class EnemyBehaviour : MonoBehaviour
     {
         life -= dmg;
         if (life <= 0)
+        {
             spawner.Add(this.gameObject);
+        }
     }
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
-    }
-    
-    public void SetPath(Transform[] path)
-    {
-        this.Points = path;
     }
 }

@@ -16,9 +16,9 @@ public class TurretPlacement : MonoBehaviour
     [SerializeField] Material[] materials;
     [SerializeField] Terrain terrain;
     [Header("Torres")]
-    [SerializeField]
-    TowerInfo[] turretData;
+    [SerializeField] GameObject[] torresPrefab;
     public static GameObject torreSelected;
+    [SerializeField] GameObject previewTower;
 
     [HideInInspector]
     public TowerInfo towerInfo;
@@ -26,12 +26,11 @@ public class TurretPlacement : MonoBehaviour
     public bool isUpgraded = false;
     
     bool active;
-    GameObject go = null;
     Vector3 pos;
     int towerCount;
     bool removeTurret;
     Ray ray;
-    int turretIndexer = -1;
+    GameObject turretToBuild;
 
     private void Update()
     {
@@ -39,7 +38,7 @@ public class TurretPlacement : MonoBehaviour
         {
             if (Physics.Raycast(ray, out RaycastHit HitInfo, Mathf.Infinity, turretsLayer))
             {
-                Currency.Increase(HitInfo.collider.gameObject.GetComponent<Turret>().Data.cost / 2);
+                Currency.Increase(HitInfo.collider.gameObject.GetComponent<Turret>().placeCost / 2);
                 Destroy(HitInfo.collider.gameObject);
                 Decrease();
             }
@@ -48,46 +47,43 @@ public class TurretPlacement : MonoBehaviour
         if (!active || maxTowers <= towerCount)
             return;
 
-        (go = go != null ? go : Instantiate(turretData[turretIndexer].preview, pos, Quaternion.identity)).transform.position = pos;
+        previewTower.transform.position = pos;
 
-        if (Physics.OverlapSphere(pos, minRadius, layersToCollide).Length > 0 ||(pos != Vector3.zero && TextureTest(pos,terrain) == "gravel"))
+        if (Physics.OverlapSphere(pos, minRadius, layersToCollide).Any() ||(pos != Vector3.zero && TextureTest(pos,terrain) == "gravel"))
         {
-            go.GetComponent<MeshRenderer>().material = materials[0];
+            previewTower.GetComponent<MeshRenderer>().material = materials[0];
             return;
         }
         else
         {
-            go.GetComponent<MeshRenderer>().material = materials[1];
+            previewTower.GetComponent<MeshRenderer>().material = materials[1];
         }
 
-        if (Input.GetMouseButtonDown(0) && pos != Vector3.zero)
+        if (Input.GetMouseButtonDown(0))
         {
-            if (!Currency.Decrease(turretData[turretIndexer].cost))
+            if (!Currency.Decrease(turretToBuild.GetComponent<Turret>().placeCost))
             {
                 Destruct();
                 return;
             }
-            GameObject turret = (GameObject)Instantiate(turretData[turretIndexer].turret, pos, transform.rotation);
-            turret.GetComponent<Turret>().Data = turretData[turretIndexer];
+            Instantiate(turretToBuild, pos, transform.rotation);
             Increase();
             Destruct();
         }
     }
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out RaycastHit HitInfo, Mathf.Infinity, layersTerrain))
         {
             pos = Vector3.zero;
-            go?.SetActive(false);
+            previewTower.SetActive(false);
             return;
         }
         else
         {
-            go?.SetActive(true);
+            previewTower.SetActive(true);
         }
-        if (!HitInfo.collider.CompareTag("Terrain"))
-            return;
         pos = HitInfo.point;
     }
     string TextureTest(Vector3 turretPos,Terrain t)
@@ -124,25 +120,19 @@ public class TurretPlacement : MonoBehaviour
     private void Destruct()
     {
         pos = Vector3.zero;
-        Destroy(go);
-        go = null;
+        previewTower.transform.position = pos;
+        previewTower.SetActive(false);
         active = false;
-        turretIndexer = -1;
     }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.black;
-        if (go != null)
-            Gizmos.DrawWireSphere(go.transform.position, minRadius);
+        if (previewTower != null)
+            Gizmos.DrawWireSphere(previewTower.transform.position, minRadius);
     }
     public void Change(int index)
     {
-        if (turretIndexer == index)
-        {
-            active = false;
-            return;
-        }
-        turretIndexer = index;
+        turretToBuild = torresPrefab[index];
         active = true;
     }
     public void Remove()
@@ -163,8 +153,13 @@ public class TurretPlacement : MonoBehaviour
 
     public void UpgradeTurret ()
 	{
+        if(torreSelected is null)
+        {
+            Debug.Log("Nenhuma Torre selecionada");
+            return;
+        }
         var torrescript = torreSelected.GetComponent<Turret>();
-        if(!Currency.Decrease(torrescript.Data.cost))
+        if(!Currency.Decrease(torrescript.upgradeCost))
         {
             Debug.Log("Sem moeda");
             return;
@@ -172,10 +167,6 @@ public class TurretPlacement : MonoBehaviour
         torrescript.Upgrade();
         Debug.Log("melhorado");
 	}
-    Vector3 GetBuildPosition()
-    {
-        return torreSelected.transform.position;
-    }
 
     public static void SelectNode (GameObject turret)
 	{

@@ -6,7 +6,6 @@ public class Turret : MonoBehaviour
 {
 
     private Transform target;
-    public TowerInfo Data { get; set; }
     
     [Header("Atributos")]
     public float range = 35f;
@@ -14,6 +13,8 @@ public class Turret : MonoBehaviour
     private float fireCountdown = 0f;
     public float turnSpeed = 10f;
     public int dmg;
+    public int placeCost;
+    public int upgradeCost;
 
     [Header("Unity Setup")]
     public string enemyTag = "Enemy";
@@ -89,7 +90,6 @@ public class Turret : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("a");
         TurretPlacement.SelectNode(this.gameObject);
     }
     public void Upgrade()

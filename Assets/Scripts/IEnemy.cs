@@ -9,5 +9,5 @@ public interface IEnemy
 {
     void ChangeStats(int nWaves, int adtional);
     void TakeDamage(int dmg);
-    void SetPath(Transform[] path);
+    Transform[] Path { get; set; }
 }

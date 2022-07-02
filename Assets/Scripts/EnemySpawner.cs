@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]    private int quantSpawnBase;
-    [SerializeField]    private Transform[] spawnPoints;
     [SerializeField]    private Transform enemiesParent;
     [SerializeField]    private GameObject enemie;
     [SerializeField]    private GameObject boss;
@@ -45,14 +45,13 @@ public class EnemySpawner : MonoBehaviour
                 while(maxSpawn > 0)
                 {
                     int m = Random.Range(0, paths.Length);
-                    if (inimigos.Count < 1)
+                    if (!inimigos.Any())
                         inimigos.Enqueue(Instantiate(enemie, enemiesParent));
                     GameObject enemy = inimigos.Dequeue();
-                    enemy.SetActive(true);
-                    enemy.transform.position = spawnPoints[m].position;
                     IEnemy enemyScript = enemy.GetComponent<IEnemy>();
+                    enemyScript.Path = paths[m].points;
                     enemyScript.ChangeStats(i,hpIncrease);
-                    enemyScript.SetPath(paths[m].points);
+                    enemy.SetActive(true);
                     maxSpawn--;
                     yield return new WaitForSecondsRealtime(delayAfterSpawn);
                 }
@@ -63,13 +62,10 @@ public class EnemySpawner : MonoBehaviour
 
             Change();
             int n = Random.Range(0, paths.Length);
-            bossInstance.SetActive(true);
-            bossInstance.transform.SetParent(spawnPoints[n]);
-            bossInstance.transform.position = spawnPoints[n].position;
             IEnemy bossScript = bossInstance.GetComponent<IEnemy>();
+            bossScript.Path = paths[n].points;
             bossScript.ChangeStats(countWaves, hpIncrease);
-            bossScript.SetPath(paths[0].points);
-
+            bossInstance.SetActive(true);
             yield return new WaitUntil(() => GameObject.FindGameObjectsWithTag("Enemy").Length < 1);
             Currency.Increase(IncreaseAmount*2);
             hpIncrease += 5;
